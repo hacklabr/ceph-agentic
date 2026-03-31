@@ -1,0 +1,10 @@
+# Operator project artifacts
+*.keyring
+ceph.conf
+ceph.client.*
+*.orig
+/service-specs/
+/scripts/
+/docs/decisions.md
+stacks.lock
+.stacks/

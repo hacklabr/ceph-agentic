@@ -1,0 +1,88 @@
+name: ceph
+namespace: agentic-stacks
+version: 0.1.0
+description: >
+  Complete operational knowledge for deploying, managing, and operating
+  production Ceph storage clusters using cephadm on bare metal. Covers
+  RBD, CephFS, and RGW services across Ceph Reef (18.2.x) and Squid (19.2.x).
+
+repository: https://github.com/agentic-stacks/ceph
+
+target:
+  software: ceph
+  versions:
+    - "18.2.x"
+    - "19.2.x"
+
+skills:
+  - name: concepts
+    entry: skills/foundation/concepts
+    description: Ceph architecture, CRUSH maps, placement groups, pools, BlueStore
+  - name: hardware-planning
+    entry: skills/foundation/hardware-planning
+    description: Disk sizing, CPU/RAM ratios, network bandwidth, node role planning
+  - name: host-preparation
+    entry: skills/foundation/host-preparation
+    description: OS prerequisites, NTP, firewall ports, container runtime, cephadm install
+  - name: bootstrap
+    entry: skills/deploy/bootstrap
+    description: cephadm bootstrap, initial MON/MGR/OSD deployment, dashboard setup
+  - name: networking
+    entry: skills/deploy/networking
+    description: Public vs cluster network design, VLAN, bonding, MTU configuration
+  - name: services
+    entry: skills/deploy/services
+    description: RBD pool creation, CephFS/MDS deployment, RGW S3 gateway setup
+  - name: health-check
+    entry: skills/operations/health-check
+    description: Cluster health interpretation, OSD states, PG states, alert triage
+  - name: scaling
+    entry: skills/operations/scaling
+    description: Add/remove OSDs and hosts, expand services, rebalance
+  - name: upgrades
+    entry: skills/operations/upgrades
+    description: Rolling upgrades within and across Reef/Squid versions
+  - name: backup-restore
+    entry: skills/operations/backup-restore
+    description: Pool snapshots, RBD mirroring, RGW multisite, disaster recovery
+  - name: pool-management
+    entry: skills/operations/pool-management
+    description: CRUSH rules, erasure coding profiles, tiering, quotas
+  - name: certificate-mgmt
+    entry: skills/operations/certificate-mgmt
+    description: Dashboard TLS, RGW TLS, internal messenger encryption
+  - name: troubleshooting
+    entry: skills/diagnose/troubleshooting
+    description: Symptom-based diagnostic trees for common Ceph failure modes
+  - name: performance
+    entry: skills/diagnose/performance
+    description: Benchmarking with rados bench/fio, slow OSD diagnosis, bottleneck ID
+  - name: known-issues
+    entry: skills/reference/known-issues
+    description: Version-specific bugs and workarounds for Reef and Squid
+  - name: compatibility
+    entry: skills/reference/compatibility
+    description: Ceph version × kernel × container image × client compatibility
+  - name: decision-guides
+    entry: skills/reference/decision-guides
+    description: Replicated vs erasure coding, BlueStore tuning, network topology
+
+project:
+  structure:
+    - cluster-spec.yaml
+    - cluster-spec.yaml.orig
+    - service-specs/
+    - ceph.conf
+    - scripts/
+    - docs/
+
+requires:
+  tools:
+    - name: cephadm
+      description: Ceph orchestrator for container-based deployment and lifecycle
+    - name: ceph
+      description: Ceph CLI for cluster operations and status
+    - name: podman
+      description: Container runtime (default for cephadm on modern distros)
+
+depends_on: []
