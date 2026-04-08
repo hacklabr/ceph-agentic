@@ -1,6 +1,5 @@
 name: ceph
 namespace: agentic-stacks
-version: 0.1.0
 description: >
   Complete operational knowledge for deploying, managing, and operating
   production Ceph storage clusters using cephadm on bare metal. Covers
