@@ -461,4 +461,47 @@ ceph orch host rescan ceph-osd04 --with-summary
 
 ---
 
-<!-- Source: ceph/ceph doc/cephadm/host-management.rst, doc/cephadm/services/osd.rst, doc/rados/operations/add-or-rm-osds.rst (fetched 2026-03-29) -->
+## Scaling in Rook (Kubernetes)
+
+In Rook, scaling is driven by the `CephCluster` CR. The general pattern is: edit the CR, apply it, and let the operator reconcile.
+
+### Add a device or node
+
+Edit the `CephCluster` CR and add the node or device under `spec.storage.nodes`, then apply:
+
+```bash
+kubectl apply -f ceph-cluster.yaml
+kubectl -n rook-ceph get pod -l app=rook-ceph-osd -w
+kubectl -n rook-ceph exec deploy/rook-ceph-tools -- ceph status
+```
+
+### Scale a device set
+
+If using `storageClassDeviceSets`, increase `count` and apply:
+
+```yaml
+spec:
+  storage:
+    storageClassDeviceSets:
+      - name: set1
+        count: 4   # increased from 3
+```
+
+### Remove an OSD in Rook
+
+1. Identify the OSD ID:
+   ```bash
+   kubectl -n rook-ceph exec deploy/rook-ceph-tools -- ceph osd tree
+   ```
+2. Set `noout` and mark the OSD out.
+3. Wait for data migration.
+4. Remove the device or reduce the device set count in the CephCluster CR.
+5. Purge the OSD with a Rook cleanup job or manual `ceph osd purge` from the toolbox.
+6. Unset `noout`.
+
+See `skills/operations/rook-operations` for the complete, step-by-step procedure.
+
+---
+
+<!-- Source: ceph/ceph doc/cephadm/host-management.rst, doc/cephadm/services/osd.rst, doc/rados/operations/add-or-rm-osds.rst (fetched 2026-03-29)
+     Rook: https://rook.io/docs/rook/latest/Storage-Configuration/Advanced/ceph-configuration-on-pvc/ -->

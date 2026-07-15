@@ -188,8 +188,64 @@ Restart the active manager to recover the orchestrator module:
 ceph mgr fail
 ```
 
+---
+
+## Rook and Kubernetes Upgrades
+
+Upgrading Rook-Ceph involves two separate steps: upgrading the Rook Operator and upgrading the Ceph image in the `CephCluster` CR.
+
+### Upgrade order
+
+1. Upgrade the Rook Operator first.
+2. Then upgrade the Ceph image in the `CephCluster` CR.
+3. Verify health after each step.
+
+### Upgrade the Rook Operator (Helm)
+
+```bash
+helm repo update
+helm upgrade --namespace rook-ceph rook-ceph rook-release/rook-ceph
+```
+
+Wait for the operator to reconcile:
+
+```bash
+kubectl -n rook-ceph get pod -l app=rook-ceph-operator -w
+```
+
+### Upgrade the Ceph image
+
+Edit the `CephCluster` CR:
+
+```yaml
+spec:
+  cephVersion:
+    image: quay.io/ceph/ceph:v19.2.5
+```
+
+Apply and monitor:
+
+```bash
+kubectl apply -f ceph-cluster.yaml
+kubectl -n rook-ceph get cephcluster rook-ceph -w
+kubectl -n rook-ceph exec deploy/rook-ceph-tools -- ceph versions
+kubectl -n rook-ceph exec deploy/rook-ceph-tools -- ceph status
+```
+
+### Verify Kubernetes health
+
+```bash
+kubectl -n rook-ceph get pod
+kubectl -n rook-ceph get events --sort-by='.lastTimestamp'
+```
+
+> **WARNING:** Major Ceph version downgrades (e.g., Squid back to Reef) are not supported inside Rook either. Plan upgrades carefully and test in a non-production cluster first.
+
+---
+
 <!-- Sources:
   https://github.com/ceph/ceph/blob/main/doc/cephadm/upgrade.rst
   https://github.com/ceph/ceph/blob/main/doc/releases/reef.rst
   https://github.com/ceph/ceph/blob/main/doc/releases/squid.rst
+  https://rook.io/docs/rook/latest/Upgrade/rook-upgrade/
 -->

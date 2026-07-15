@@ -66,6 +66,17 @@ No service conflicts with another — all three can be deployed in parallel, but
 
 ---
 
+## Kubernetes CSI
+
+On Rook, RBD and CephFS are exposed to workloads through StorageClasses backed by the Rook-Ceph CSI drivers. See `skills/operations/k8s-csi` for:
+
+- Creating `CephBlockPool` and `CephFilesystem` CRs
+- Configuring RBD and CephFS StorageClasses
+- Provisioning PVCs and using them in Pods
+- Volume snapshots and expansion
+
+---
+
 ## Quick Status Reference
 
 After deploying any service, verify using these commands:

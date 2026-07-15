@@ -10,6 +10,13 @@ Cluster health monitoring starts with `ceph status`. Every section of that outpu
 
 Run `ceph status` (alias: `ceph -s`) to get a complete snapshot. The output groups into four sections:
 
+For Rook on Kubernetes, run `ceph` through the toolbox pod:
+
+```bash
+kubectl -n rook-ceph exec deploy/rook-ceph-tools -- ceph status
+kubectl -n rook-ceph exec deploy/rook-ceph-tools -- ceph health detail
+```
+
 ```
   cluster:
     id:     477e46f1-ae41-4e43-9c8f-72c918ab0a20
@@ -35,6 +42,22 @@ Run `ceph status` (alias: `ceph -s`) to get a complete snapshot. The output grou
   io:
     client:   1.2 MiB/s rd, 512 KiB/s wr, 120 op/s rd, 80 op/s wr
     recovery: 8.5 MiB/s, 4 keys/s, 12 objects/s
+```
+
+### Rook and Kubernetes-specific checks
+
+Also verify Kubernetes-level health:
+
+```bash
+# All Rook pods are Running
+kubectl -n rook-ceph get pod
+
+# CephCluster CR reports Ready and HEALTH_OK
+kubectl -n rook-ceph get cephcluster rook-ceph
+
+# CSI driver pods are healthy
+kubectl -n rook-ceph get pod -l app=csi-rbdplugin-provisioner
+kubectl -n rook-ceph get pod -l app=csi-cephfsplugin-provisioner
 ```
 
 ### cluster section

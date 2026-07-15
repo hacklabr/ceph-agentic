@@ -4,6 +4,8 @@ Bootstrap creates the cluster's first Monitor and Manager, generates cluster key
 
 **Prerequisites:** All hosts must be fully prepared before proceeding. See `skills/foundation/host-preparation/README.md`. Bootstrap will fail silently or produce hard-to-diagnose errors if time synchronization, container runtime, or disk state is wrong.
 
+**Alternative:** For Kubernetes, see `skills/deploy/rook` for deploying Rook-Ceph instead of running `cephadm bootstrap`.
+
 ---
 
 ## Bootstrap the First Node

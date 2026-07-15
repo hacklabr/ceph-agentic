@@ -2,8 +2,9 @@ name: ceph
 namespace: agentic-stacks
 description: >
   Complete operational knowledge for deploying, managing, and operating
-  production Ceph storage clusters using cephadm on bare metal. Covers
-  RBD, CephFS, and RGW services across Ceph Reef (18.2.x) and Squid (19.2.x).
+  production Ceph storage clusters using cephadm on bare metal or Rook on
+  Kubernetes. Covers RBD, CephFS, and RGW services across Ceph Reef (18.2.x),
+  Squid (19.2.x), and Tentacle (20.2.x).
 
 repository: https://github.com/agentic-stacks/ceph
 
@@ -12,6 +13,7 @@ target:
   versions:
     - "18.2.x"
     - "19.2.x"
+    - "20.2.x"
 
 skills:
   - name: concepts
@@ -65,6 +67,21 @@ skills:
   - name: decision-guides
     entry: skills/reference/decision-guides
     description: Replicated vs erasure coding, BlueStore tuning, network topology
+  - name: k8s-prerequisites
+    entry: skills/foundation/k8s-prerequisites
+    description: Kubernetes prerequisites for running Rook (nodes, labels, taints, PSP/RBAC, CNI)
+  - name: rook
+    entry: skills/deploy/rook
+    description: Deploy Rook Operator and CephCluster CR on Kubernetes
+  - name: rook-operations
+    entry: skills/operations/rook-operations
+    description: Operate Ceph via Rook (scale, upgrade, device sets, resource limits)
+  - name: k8s-csi
+    entry: skills/operations/k8s-csi
+    description: Configure RBD and CephFS CSI drivers, StorageClasses, and PVCs
+  - name: rook-troubleshooting
+    entry: skills/diagnose/rook-troubleshooting
+    description: Diagnose Rook on Kubernetes (pod failures, operator logs, events, toolbox)
 
 project:
   structure:
@@ -78,10 +95,16 @@ project:
 requires:
   tools:
     - name: cephadm
-      description: Ceph orchestrator for container-based deployment and lifecycle
+      description: Ceph orchestrator for container-based deployment and lifecycle on bare metal
     - name: ceph
       description: Ceph CLI for cluster operations and status
     - name: podman
       description: Container runtime (default for cephadm on modern distros)
+    - name: kubectl
+      description: Kubernetes CLI for Rook cluster management and troubleshooting
+    - name: helm
+      description: Kubernetes package manager for deploying Rook Operator
+    - name: rook
+      description: Rook storage operator for Kubernetes that orchestrates Ceph clusters
 
 depends_on: []

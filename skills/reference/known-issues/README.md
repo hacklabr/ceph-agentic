@@ -6,6 +6,7 @@ This directory documents real, confirmed known issues extracted from official Ce
 
 | File | Ceph Series | Latest Covered Release | Source |
 |------|-------------|------------------------|--------|
+| [tentacle-20.2.md](./tentacle-20.2.md) | Tentacle (20.2.x) | v20.2.2 | [Official release notes](https://github.com/ceph/ceph/blob/main/doc/releases/tentacle.rst) |
 | [reef-18.2.md](./reef-18.2.md) | Reef (18.2.x) | v18.2.8 | [Official release notes](https://github.com/ceph/ceph/blob/main/doc/releases/reef.rst) |
 | [squid-19.2.md](./squid-19.2.md) | Squid (19.2.x) | v19.2.3 | [Official release notes](https://github.com/ceph/ceph/blob/main/doc/releases/squid.rst) |
 
